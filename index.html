@@ -1,0 +1,100 @@
+{#
+
+Copyright (c) 2014 Nick Welch <nick@incise.org>
+
+This file is part of geoffrey.
+
+geoffrey is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+geoffrey is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with geoffrey.  If not, see <http://www.gnu.org/licenses/>.
+
+#}<html>
+    <head>
+        <title></title>
+        <style>
+            * {
+                font-family: sans-serif;
+            }
+            body {
+                padding: 20px;
+            }
+            .mode-button {
+                background: #36a;
+                color: white;
+                width: 96%;
+                font-size: 128px;
+                margin-bottom: 30px;
+                padding: 10px 20px;
+            }
+            .mode-info {
+                float: right;
+                font-size: 60px;
+                text-align: center;
+                width: 170px;
+            }
+            .mode-mode {
+                font-size: 35px;
+            }
+            .mode-duration {
+                font-size: 25px;
+            }
+            #status {
+                font-size: 40px;
+            }
+            #error {
+                font-size: 40px;
+                color: red;
+            }
+        </style>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script>
+            $(function () {
+                $('.mode-button').click(function (ev) {
+                    var self = $(this);
+                    $('.mode-button').css('background', '#36a');
+                    self.css('background', '#3a6');
+                    $.ajax('/mode', {
+                        'type': 'PUT',
+                        'contentType': 'text/plain',
+                        'data': self.data('name'),
+                        'error': function (data, textStatus, jqXHR) {
+                            self.css('background', '#36a');
+                        }
+                    });
+                });
+
+                $('.mode-button[data-name="{{ active_mode_slug }}"]').css('background', '#3a6');
+            });
+        </script>
+    </head>
+    <body>
+        {% for name, mode in modes %}
+            <div class="mode-button" data-name="{{ name }}">
+                {{ name }}
+
+                <div class="mode-info">
+                {{ mode.temp }}&deg;
+                <div class="mode-mode">
+                    {{ mode.mode }}
+                </div>
+                {% if mode.duration_hours %}
+                <div class="mode-duration">
+                    {{ parseInt(mode.duration_hours) }} hour{% if mode.duration_hours > 1 %}s{% endif %}
+                </div>
+                {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        <div id="status">Tank currently {{ temp }}&deg;</div>
+        <div id="error"></div>
+    </body>
+</html>
