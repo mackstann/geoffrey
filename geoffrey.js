@@ -16,10 +16,7 @@
 // along with geoffrey.  If not, see <http://www.gnu.org/licenses/>.
 
 var fs = require("fs");
-var http = require("http");
-var url = require("url");
 
-var connect = require("connect");
 var express = require("express");
 var gea = require("./lib/gea2.js");
 var ini = require("ini");

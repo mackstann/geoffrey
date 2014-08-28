@@ -9,6 +9,5 @@
           "node-hid": "0.3.1",
           "green-bean": "0.1.1",
           "swig": "1.4.2",
-          "connect": "2.25.7"
       }
 }
